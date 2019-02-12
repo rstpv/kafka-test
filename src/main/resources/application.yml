@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: cloud-k8s-app
+  cloud:
+    kubernetes:
+      config:
+        enabled: true
+        name: sample-config
+        namespace: default
+        sources:
+          # Spring Cloud Kubernetes will lookup a ConfigMap named c1 in namespace default-namespace
+          - name: sample-config
+  kafka:
+    bootstrap-servers: PLAINTEXT_HOST://localhost:29092
+    schema:
+      registry:
+        url: http://localhost:8081
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
