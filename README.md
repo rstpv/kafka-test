@@ -27,4 +27,12 @@ http://localhost:8080/kafka-template-avro/avro/{message}/{messageCount}?idFactor
 ## Springcloud kubernetes config
 
 - Create a config-map with the same name than the one in `spring.application.name`
-- The user used to execute the container must have permissions to read configmaps, pods
+  - If inside the k8s cluster, the kafka broker service is called broker, you can use `kubectl create configmap sample-config --from-file=src/main/resources/application-kubernetes.yml`, if not, modify it accordingly. 
+- The user used to execute the container must have permissions to read configmaps.
+  - If the default user and default namespace are used, you can use 
+  ```
+    kubectl create rolebinding default-view \
+    --clusterrole=view \
+    --serviceaccount=default:default \
+    --namespace=default
+  ```
