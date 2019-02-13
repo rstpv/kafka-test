@@ -1,0 +1,12 @@
+{
+  "type" : "record",
+  "name" : "Example",
+  "namespace" : "co.ceiba.example.kafka",
+  "fields" : [ {
+    "name" : "id",
+    "type" : "string"
+  }, {
+    "name" : "message",
+    "type" : "string"
+  } ]
+}

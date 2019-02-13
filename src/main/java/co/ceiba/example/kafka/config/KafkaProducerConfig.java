@@ -2,6 +2,7 @@ package co.ceiba.example.kafka.config;
 
 import co.ceiba.example.kafka.Example;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -28,7 +29,7 @@ public class KafkaProducerConfig {
     public ProducerFactory<String, Example> avroProducerFactory() {
         Map<String, Object> props = kafkaProperties.buildProducerProperties();
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
-        props.put("schema.registry.url", schemaRegistry);
+        props.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistry);
 
         return new DefaultKafkaProducerFactory<>(props);
     }

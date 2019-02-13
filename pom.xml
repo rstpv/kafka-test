@@ -19,6 +19,7 @@
         <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
         <avro.version>1.8.2</avro.version>
         <confluent.version>5.0.0</confluent.version>
+        <schema-registry.url>http://localhost:8081</schema-registry.url>
     </properties>
 
     <dependencies>
@@ -39,10 +40,6 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka-streams</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -93,11 +90,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-streams</artifactId>
-        </dependency>
-        
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -134,17 +126,23 @@
                 <version>${confluent.version}</version>
                 <configuration>
                     <schemaRegistryUrls>
-                        <param>http://localhost:8081</param>
+                        <param>${schema-registry.url}</param>
                     </schemaRegistryUrls>
                     <subjects>
                         <example>src/main/resources/avro/co/ceiba/example/kafka/ExampleAvro.avsc</example>
                     </subjects>
-                    <outputDirectory>src/main/avro</outputDirectory>
+                    <subjectPatterns>
+                        <param>example</param>
+                    </subjectPatterns>
+                    <outputDirectory>src/main/resources/avro</outputDirectory>
                 </configuration>
                 <goals>
                     <goal>register</goal>
+                    <goal>test-compatibility</goal>
+                    <goal>register</goal>
                 </goals>
             </plugin>
+
 
             <plugin>
                 <groupId>org.apache.avro</groupId>
@@ -158,7 +156,7 @@
                         </goals>
                         <configuration>
                             <sourceDirectory>${project.basedir}/src/main/resources/avro/</sourceDirectory>
-                            <outputDirectory>${project.build.directory}/generated/avro</outputDirectory>
+                            <outputDirectory>${project.build.directory}/generated-sources/</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
