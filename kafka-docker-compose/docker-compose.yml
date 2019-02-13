@@ -2,7 +2,7 @@
 version: '3'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.1.0
+    image: confluentinc/cp-zookeeper:latest
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -12,7 +12,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    image: confluentinc/cp-kafka:5.1.0
+    image: confluentinc/cp-kafka:latest
     hostname: broker
     container_name: broker
     depends_on:
@@ -27,11 +27,11 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      CONFLUENT_METRICS_ENABLE: 'true'
-      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:5.1.0
+    image: confluentinc/cp-schema-registry:latest
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -44,7 +44,7 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
 
   ksql-server:
-    image: confluentinc/cp-ksql-server:5.1.0
+    image: confluentinc/cp-ksql-server:latest
     hostname: ksql-server
     container_name: ksql-server
     depends_on:
@@ -65,7 +65,7 @@ services:
       KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
 
   ksql-cli:
-    image: confluentinc/cp-ksql-cli:5.1.0
+    image: confluentinc/cp-ksql-cli:latest
     container_name: ksql-cli
     depends_on:
       - broker
@@ -74,7 +74,7 @@ services:
     tty: true
 
   rest-proxy:
-    image: confluentinc/cp-kafka-rest:5.1.0
+    image: confluentinc/cp-kafka-rest:latest
     depends_on:
       - zookeeper
       - broker
